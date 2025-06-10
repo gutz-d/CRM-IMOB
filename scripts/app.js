@@ -522,7 +522,7 @@ class App {
             }
         ];
         
-        storage.save('negociations', negotiations);
+        storage.save('negotiations', negotiations); // corrigido de 'negociations'
     }
 }
 
@@ -546,10 +546,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   await loadAllComponents();
   // Inicializa aplicação e componentes após injeção do HTML
   window.app = new App();
-  initSidebar();
-  initHeader();
-  initModal();
-  initFooter();
+  if (typeof initSidebar === 'function') initSidebar();
+  if (typeof initHeader === 'function') initHeader();
+  if (typeof initModal === 'function') initModal();
+  if (typeof initFooter === 'function') initFooter();
 });
 
 // Service Worker para PWA (Progressive Web App)
@@ -591,17 +591,21 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // Sidebar responsiva para mobile
-const sidebar = document.getElementById('sidebar');
-const toggleSidebarBtn = document.getElementById('toggle-sidebar');
-toggleSidebarBtn?.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-});
-// Fechar sidebar ao clicar fora em mobile
-window.addEventListener('click', (e) => {
-  if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-    if (!sidebar.contains(e.target) && e.target !== toggleSidebarBtn) {
-      sidebar.classList.remove('open');
-    }
+window.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.getElementById('sidebar');
+  const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+  if (toggleSidebarBtn && sidebar) {
+    toggleSidebarBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+    // Fechar sidebar ao clicar fora em mobile
+    window.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && e.target !== toggleSidebarBtn) {
+          sidebar.classList.remove('open');
+        }
+      }
+    });
   }
 });
 
