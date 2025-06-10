@@ -539,8 +539,13 @@ import { initSidebar } from '../components/sidebar.js';
 import { initHeader } from '../components/header.js';
 import { initModal } from '../components/modal.js';
 import { initFooter } from '../components/footer.js';
+import { loadAllComponents } from './load-components.js';
 
-window.addEventListener('DOMContentLoaded', () => {
+// Aguarda carregar componentes antes de inicializar app e componentes
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadAllComponents();
+  // Inicializa aplicação e componentes após injeção do HTML
+  window.app = new App();
   initSidebar();
   initHeader();
   initModal();
