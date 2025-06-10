@@ -1,0 +1,24 @@
+/* Toast CSS Component */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.toast {
+  background: #222;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 1rem;
+  opacity: 0.95;
+  transition: opacity 0.3s;
+}
+.toast--success { background: #2ecc40; }
+.toast--error { background: #e74c3c; }
+.toast--info { background: #3498db; }
+.toast--warning { background: #f1c40f; color: #222; }

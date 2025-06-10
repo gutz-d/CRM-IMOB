@@ -1,3 +1,5 @@
+import { showToast } from '../components/toast.js';
+
 /**
  * Componentes JavaScript para o CRM Imobiliário
  * Classes e componentes reutilizáveis

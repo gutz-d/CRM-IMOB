@@ -1,3 +1,5 @@
+import { ROUTES, USER_ROLES, APP_TEXTS } from './constants.js';
+
 /**
  * Funções utilitárias para o CRM Imobiliário
  * Seguindo boas práticas de JavaScript moderno (ES6+)
@@ -447,3 +449,15 @@ window.generatePropertyCode = generatePropertyCode;
 window.storage = new StorageManager('crm_imobi_');
 
 console.log('✅ Utils carregados com sucesso');
+
+// Sanitização básica de entradas de texto
+export function sanitizeInput(input) {
+  const div = document.createElement('div');
+  div.innerText = input;
+  return div.innerHTML;
+}
+
+// Validação simples de formulário (exemplo para uso futuro)
+export function validateRequired(input) {
+  return input && input.trim().length > 0;
+}

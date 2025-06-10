@@ -276,4 +276,37 @@ Sistema desenvolvido seguindo as **melhores práticas** de:
 
 ---
 
+# CRM Imobiliário - Sistema Integrado
+
+## Visão Geral
+Sistema de CRM para imobiliárias, com gestão de leads, imóveis, negociações, clientes e relatórios.
+
+## Instalação
+1. Clone o repositório
+2. Instale dependências (se houver)
+3. Abra o index.html em seu navegador
+
+## Estrutura do Projeto
+- `/components` - Componentes HTML, JS e CSS reutilizáveis
+- `/scripts` - Scripts JS do app
+- `/styles` - CSS global e de componentes
+- `/assets` - Imagens, ícones, fontes
+
+## Contribuição
+- Siga o padrão de código definido em `.editorconfig`
+- Use as constantes de `scripts/constants.js`
+- Documente funções e componentes
+- Veja o CHANGELOG.md para histórico de mudanças
+
+## Roadmap
+- [ ] Separação de componentes
+- [ ] Acessibilidade WCAG AA
+- [ ] Responsividade total
+- [ ] Funcionalidades modernas (PWA, i18n, etc)
+
+## Licença
+MIT
+
+---
+
 **🎯 Sistema pronto para produção com todas as melhorias de usabilidade implementadas!**

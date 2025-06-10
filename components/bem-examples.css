@@ -1,0 +1,22 @@
+/* Exemplo de uso de BEM para classes de componentes */
+.sidebar {}
+.sidebar__header {}
+.sidebar__footer {}
+.sidebar__nav {}
+.sidebar__user-info {}
+
+.main-header {}
+.main-header__breadcrumb {}
+.main-header__actions {}
+
+.modal {}
+.modal__header {}
+.modal__body {}
+.modal__footer {}
+
+.toast-container {}
+.toast {}
+.toast--success {}
+.toast--error {}
+.toast--info {}
+.toast--warning {}

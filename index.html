@@ -8,155 +8,33 @@
     <link rel="stylesheet" href="styles/themes.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="components/sidebar.css">
+    <link rel="stylesheet" href="components/header.css">
+    <link rel="stylesheet" href="components/modal.css">
+    <link rel="stylesheet" href="components/toast.css">
+    <link rel="stylesheet" href="components/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta name="description" content="CRM Imobiliário completo com gestão de leads, imóveis e negociações">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/icon-512.png">
 </head>
 <body class="theme-dark">
     <!-- Skip links para acessibilidade -->
-    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    <a href="#main-content" class="skip-link" tabindex="0">Pular para o conteúdo principal</a>
     
     <div class="app-container">
         <!-- Barra lateral -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <img src="assets/images/logo.svg" alt="Logo CRM Imobiliário" class="logo">
-                <button class="toggle-sidebar" id="toggle-sidebar" aria-label="Expandir/Recolher menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            
-            <nav class="main-nav">
-                <ul>
-                    <li>
-                        <a href="#dashboard" class="nav-item active" data-section="dashboard">
-                            <i class="fas fa-chart-pie"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#leads" class="nav-item" data-section="leads">
-                            <i class="fas fa-funnel-dollar"></i>
-                            <span>Leads</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#clientes" class="nav-item" data-section="clientes">
-                            <i class="fas fa-users"></i>
-                            <span>Clientes</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#imoveis" class="nav-item" data-section="imoveis">
-                            <i class="fas fa-home"></i>
-                            <span>Imóveis</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#negociacoes" class="nav-item" data-section="negociacoes">
-                            <i class="fas fa-handshake"></i>
-                            <span>Negociações</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#financeiro" class="nav-item" data-section="financeiro">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <span>Financeiro</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#relatorios" class="nav-item" data-section="relatorios">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Relatórios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#configuracoes" class="nav-item" data-section="configuracoes">
-                            <i class="fas fa-cog"></i>
-                            <span>Configurações</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema claro/escuro">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <div class="user-info">
-                    <img src="assets/images/user-avatar.jpg" alt="Avatar do usuário" class="user-avatar">
-                    <div class="user-details">
-                        <span class="user-name">João Silva</span>
-                        <span class="user-role">Corretor</span>
-                    </div>
-                </div>
-            </div>
+            <!-- Conteúdo movido para components/sidebar.html -->
         </aside>
 
         <!-- Conteúdo principal -->
-        <main class="main-content" id="main-content">
-            <header class="main-header">
-                <div class="breadcrumb">
-                    <ul>
-                        <li><a href="#dashboard">Início</a></li>
-                        <li><span class="current-page">Dashboard</span></li>
-                    </ul>
-                </div>
-                
-                <div class="header-actions">
-                    <!-- Botões de IA -->
-                    <button class="ai-btn voice-btn" aria-label="Assistente de voz">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="ai-btn chat-btn" aria-label="Assistente de chat">
-                        <i class="fas fa-comment-dots"></i>
-                    </button>
-                    
-                    <!-- Busca global -->
-                    <div class="search-container">
-                        <input type="text" placeholder="Buscar..." class="search-input" aria-label="Busca global">
-                        <button class="search-btn" aria-label="Pesquisar">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Notificações -->
-                    <div class="notifications-dropdown">
-                        <button class="notifications-btn" aria-label="Notificações">
-                            <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
-                        </button>
-                        <div class="dropdown-content">
-                            <div class="notification-header">
-                                <h3>Notificações</h3>
-                                <button class="mark-all-read">Marcar todas como lidas</button>
-                            </div>
-                            <ul class="notification-list">
-                                <li class="notification-item unread">
-                                    <div class="notification-icon"><i class="fas fa-user"></i></div>
-                                    <div class="notification-content">
-                                        <p>Novo lead cadastrado: <strong>Maria Oliveira</strong></p>
-                                        <span class="notification-time">há 5 minutos</span>
-                                    </div>
-                                </li>
-                                <li class="notification-item unread">
-                                    <div class="notification-icon"><i class="fas fa-calendar"></i></div>
-                                    <div class="notification-content">
-                                        <p>Lembrete: Visita agendada às 14h</p>
-                                        <span class="notification-time">há 30 minutos</span>
-                                    </div>
-                                </li>
-                                <li class="notification-item unread">
-                                    <div class="notification-icon"><i class="fas fa-handshake"></i></div>
-                                    <div class="notification-content">
-                                        <p>Proposta aceita para o imóvel <strong>AP-2045</strong></p>
-                                        <span class="notification-time">há 2 horas</span>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="#todas-notificacoes" class="see-all-link">Ver todas</a>
-                        </div>
-                    </div>
-                </div>
+        <main class="main-content" id="main-content" role="main">
+            <!-- Header -->
+            <header class="main-header" id="main-header">
+                <!-- Conteúdo movido para components/header.html -->
             </header>
 
             <!-- Conteúdo do dashboard -->
@@ -419,19 +297,7 @@
             
             <!-- Modal para confirmações -->
             <div class="modal" id="confirmation-modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Confirmar ação</h2>
-                        <button class="close-btn" aria-label="Fechar">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Tem certeza que deseja continuar?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="outlined-btn cancel-btn">Cancelar</button>
-                        <button class="primary-btn confirm-btn">Confirmar</button>
-                    </div>
-                </div>
+                <!-- Conteúdo movido para components/modal.html -->
             </div>
         </main>
     </div>
@@ -461,9 +327,19 @@
         </div>
     </div>
 
+    <!-- Seletor de idioma -->
+    <div class="language-switcher" style="position:absolute;top:1rem;right:1rem;z-index:2000;">
+      <button onclick="setLanguage('pt')" aria-label="Português">🇧🇷</button>
+      <button onclick="setLanguage('en')" aria-label="English">🇺🇸</button>
+    </div>
+
     <!-- Scripts -->
-    <script src="scripts/utils.js"></script>
-    <script src="scripts/components.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="scripts/utils.js" defer></script>
+    <script src="scripts/components.js" defer></script>
+    <script src="scripts/app.js" defer></script>
+    <script src="components/sidebar.js" type="module" defer></script>
+    <script src="components/header.js" type="module" defer></script>
+    <script src="components/toast.js" type="module" defer></script>
+    <script src="components/footer.js" type="module" defer></script>
 </body>
 </html>

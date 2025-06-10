@@ -1,0 +1,44 @@
+/* Modal CSS Component */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+.modal.open {
+  display: flex;
+}
+.modal__content {
+  background: #fff;
+  color: #222;
+  border-radius: 8px;
+  min-width: 320px;
+  max-width: 90vw;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+.modal__header, .modal__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal__body {
+  margin: 1.5rem 0;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal[aria-modal="true"]:focus {
+  outline: 2px solid #005fcc;
+}
+
+.close-btn:focus {
+  outline: 2px solid #005fcc;
+}

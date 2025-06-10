@@ -124,6 +124,21 @@ class App {
                 }
             }
         });
+        
+        // Navegação por teclado nos menus
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach((item, idx) => {
+          item.setAttribute('tabindex', '0');
+          item.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              navItems[(idx + 1) % navItems.length].focus();
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              navItems[(idx - 1 + navItems.length) % navItems.length].focus();
+            }
+          });
+        });
     }
 
     /**
@@ -507,7 +522,7 @@ class App {
             }
         ];
         
-        storage.save('negotiations', negotiations);
+        storage.save('negociations', negotiations);
     }
 }
 
@@ -519,14 +534,189 @@ document.addEventListener('DOMContentLoaded', () => {
     window.app = new App();
 });
 
-// Service Worker para PWA
+// Importando e inicializando os componentes Sidebar e Header
+import { initSidebar } from '../components/sidebar.js';
+import { initHeader } from '../components/header.js';
+import { initModal } from '../components/modal.js';
+import { initFooter } from '../components/footer.js';
+
+window.addEventListener('DOMContentLoaded', () => {
+  initSidebar();
+  initHeader();
+  initModal();
+  initFooter();
+});
+
+// Service Worker para PWA (Progressive Web App)
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // Desativado por enquanto, será implementado na próxima fase
-        /*
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(reg => console.log('Service Worker registrado'))
-            .catch(err => console.error('Erro ao registrar Service Worker:', err));
-        */
-    });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(
+      reg => console.log('Service Worker registrado:', reg.scope),
+      err => console.warn('Service Worker falhou:', err)
+    );
+  });
 }
+
+// Alternância de tema com persistência
+const themeToggle = document.getElementById('theme-toggle');
+themeToggle?.addEventListener('click', () => {
+  document.body.classList.toggle('theme-dark');
+  document.body.classList.toggle('theme-light');
+  localStorage.setItem('theme', document.body.classList.contains('theme-dark') ? 'dark' : 'light');
+});
+// Carregar tema salvo
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    document.body.classList.remove('theme-dark', 'theme-light');
+    document.body.classList.add(`theme-${savedTheme}`);
+  }
+});
+
+// Detectar e aplicar dark mode automático baseado no SO do usuário
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (!savedTheme) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('theme-dark');
+    } else {
+      document.body.classList.add('theme-light');
+    }
+  }
+});
+
+// Sidebar responsiva para mobile
+const sidebar = document.getElementById('sidebar');
+const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+toggleSidebarBtn?.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
+// Fechar sidebar ao clicar fora em mobile
+window.addEventListener('click', (e) => {
+  if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+    if (!sidebar.contains(e.target) && e.target !== toggleSidebarBtn) {
+      sidebar.classList.remove('open');
+    }
+  }
+});
+
+// Fechar modais e overlays com ESC
+const modal = document.getElementById('confirmation-modal');
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    modal?.classList.remove('open');
+    sidebar?.classList.remove('open');
+  }
+});
+
+// Foco visível customizado para elementos interativos
+const style = document.createElement('style');
+style.innerHTML = `
+  .focus-visible {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px;
+  }
+`;
+document.head.appendChild(style);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    document.body.classList.add('user-is-tabbing');
+  }
+});
+document.addEventListener('mousedown', () => {
+  document.body.classList.remove('user-is-tabbing');
+});
+document.addEventListener('focusin', (e) => {
+  if (document.body.classList.contains('user-is-tabbing')) {
+    e.target.classList.add('focus-visible');
+  }
+});
+document.addEventListener('focusout', (e) => {
+  e.target.classList.remove('focus-visible');
+});
+
+// Lazy loading para imagens (exemplo para imagens futuras)
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+    if (!img.hasAttribute('src')) {
+      img.src = img.dataset.src;
+    }
+  });
+});
+
+// Exemplo de uso da sanitização em campos de busca
+const searchInput = document.querySelector('.search-input');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    e.target.value = sanitizeInput(e.target.value);
+  });
+}
+
+// Exemplo de uso da validação em um campo de busca
+if (searchInput) {
+  searchInput.addEventListener('blur', (e) => {
+    if (!validateRequired(e.target.value)) {
+      showToast('O campo de busca não pode ficar vazio.', 'warning');
+    }
+  });
+}
+
+// Exemplo de uso de aria-live para feedback dinâmico
+const toastContainer = document.getElementById('toast-container');
+if (toastContainer) {
+  toastContainer.setAttribute('aria-live', 'polite');
+  toastContainer.setAttribute('role', 'status');
+}
+
+// Exemplo de autocomplete simples para busca global
+const suggestions = ['Leads', 'Clientes', 'Imóveis', 'Negociações', 'Financeiro', 'Relatórios', 'Configurações'];
+if (searchInput) {
+  const datalist = document.createElement('datalist');
+  datalist.id = 'search-suggestions';
+  suggestions.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item;
+    datalist.appendChild(option);
+  });
+  document.body.appendChild(datalist);
+  searchInput.setAttribute('list', 'search-suggestions');
+}
+
+// Exemplo de internacionalização (i18n) simples
+const translations = {
+  pt: {
+    dashboard: 'Dashboard',
+    leads: 'Leads',
+    clientes: 'Clientes',
+    imoveis: 'Imóveis',
+    negociacoes: 'Negociações',
+    financeiro: 'Financeiro',
+    relatorios: 'Relatórios',
+    configuracoes: 'Configurações',
+    buscar: 'Buscar...'
+  },
+  en: {
+    dashboard: 'Dashboard',
+    leads: 'Leads',
+    clientes: 'Clients',
+    imoveis: 'Properties',
+    negociacoes: 'Deals',
+    financeiro: 'Finance',
+    relatorios: 'Reports',
+    configuracoes: 'Settings',
+    buscar: 'Search...'
+  }
+};
+// Suporte a tradução dinâmica do placeholder do campo de busca
+function setLanguage(lang) {
+  const t = translations[lang] || translations.pt;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+}
+window.setLanguage = setLanguage;

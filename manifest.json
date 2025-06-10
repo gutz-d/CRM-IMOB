@@ -1,0 +1,21 @@
+{
+  "name": "CRM Imobiliário",
+  "short_name": "CRM-IMOB",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#222",
+  "theme_color": "#005fcc",
+  "description": "CRM Imobiliário completo com gestão de leads, imóveis e negociações.",
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
