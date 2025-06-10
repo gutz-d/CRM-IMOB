@@ -1422,3 +1422,35 @@ select.form-control {
         font-size: var(--font-size-xs);
     }
 }
+
+/* Tooltip styles */
+.tooltip-popup {
+  position: absolute;
+  background: #222;
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.15);
+  z-index: 9999;
+  pointer-events: none;
+  max-width: 260px;
+}
+
+/* Collapsible form section */
+.form-section.collapsed {
+  max-height: 2.5rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.form-section.collapsed h2::after {
+  content: ' (clique para expandir)';
+  font-size: 0.9em;
+  color: var(--accent-blue);
+}
+
+/* Progress bar styles */
+.progress-bar-container {
+  margin-bottom: 2rem;
+}

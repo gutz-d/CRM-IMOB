@@ -526,6 +526,168 @@ class App {
     }
 }
 
+// ========== CLIENTES FORM =============
+function validarCPF(cpf) {
+  cpf = cpf.replace(/[\D]/g, '');
+  if (cpf.length !== 11 || /^([0-9])\1+$/.test(cpf)) return false;
+  let soma = 0, resto;
+  for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(9, 10))) return false;
+  soma = 0;
+  for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf.substring(10, 11))) return false;
+  return true;
+}
+
+function maskCPF(v) {
+  v = v.replace(/\D/g, "");
+  v = v.replace(/(\d{3})(\d)/, "$1.$2");
+  v = v.replace(/(\d{3})(\d)/, "$1.$2");
+  v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return v;
+}
+
+function maskPhone(v) {
+  v = v.replace(/\D/g, "");
+  v = v.replace(/(\d{2})(\d)/, "($1) $2");
+  v = v.replace(/(\d{5})(\d)/, "$1-$2");
+  return v;
+}
+
+function maskCEP(v) {
+  v = v.replace(/\D/g, "");
+  v = v.replace(/(\d{5})(\d)/, "$1-$2");
+  return v;
+}
+
+function maskMoney(v) {
+  v = v.replace(/\D/g, "");
+  v = (v/100).toFixed(2) + '';
+  v = v.replace('.', ',');
+  v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  return 'R$ ' + v;
+}
+
+function updateProgress() {
+  const sections = document.querySelectorAll('#clientForm .form-section');
+  let completed = 0;
+  sections.forEach(s => {
+    const inputs = s.querySelectorAll('input,select');
+    let valid = true;
+    inputs.forEach(inp => { if (inp.required && !inp.value) valid = false; });
+    if (valid) completed++;
+  });
+  const progress = (completed / sections.length) * 100;
+  document.getElementById('progressBar').style.width = `${progress}%`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('clientForm');
+  if (!form) return;
+
+  // Máscaras
+  form.cpf.addEventListener('input', e => {
+    e.target.value = maskCPF(e.target.value);
+  });
+  form.telefone.addEventListener('input', e => {
+    e.target.value = maskPhone(e.target.value);
+  });
+  form.cep.addEventListener('input', e => {
+    e.target.value = maskCEP(e.target.value);
+  });
+  form['renda-principal'].addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '');
+    e.target.value = maskMoney(v);
+  });
+
+  // Validação CPF
+  form.cpf.addEventListener('blur', e => {
+    if (!validarCPF(e.target.value)) {
+      e.target.setCustomValidity('CPF inválido');
+      e.target.reportValidity();
+    } else {
+      e.target.setCustomValidity('');
+    }
+  });
+
+  // Validação nome completo
+  form.nomeCompleto.addEventListener('blur', e => {
+    const val = e.target.value.trim().split(' ');
+    if (val.length < 2) {
+      e.target.setCustomValidity('Digite o nome completo (mínimo 2 palavras)');
+      e.target.reportValidity();
+    } else {
+      e.target.setCustomValidity('');
+    }
+  });
+
+  // Validação CEP + ViaCEP
+  form.cep.addEventListener('blur', async e => {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      if (!data.erro) {
+        form.logradouro.value = data.logradouro || '';
+        form.bairro.value = data.bairro || '';
+        form.cidade.value = data.localidade || '';
+        form.uf.value = data.uf || '';
+      }
+    }
+  });
+
+  // Estado civil -> cônjuge
+  form.estadoCivil.addEventListener('change', e => {
+    const conjuge = document.getElementById('conjugeFields');
+    if (e.target.value === 'casado') {
+      conjuge.style.display = '';
+    } else {
+      conjuge.style.display = 'none';
+    }
+  });
+
+  // Colapsos
+  document.querySelectorAll('.form-section.collapsible h2').forEach(h2 => {
+    h2.addEventListener('click', e => {
+      const section = h2.parentElement;
+      section.classList.toggle('collapsed');
+    });
+  });
+
+  // Progresso
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+  updateProgress();
+
+  // Auto-save
+  setInterval(() => {
+    const formData = new FormData(form);
+    localStorage.setItem('clientDraft', JSON.stringify(Object.fromEntries(formData)));
+  }, 30000);
+
+  // Tooltips
+  document.querySelectorAll('.tooltip-icon').forEach(icon => {
+    icon.addEventListener('mouseenter', e => {
+      const tip = document.createElement('div');
+      tip.className = 'tooltip-popup';
+      tip.textContent = icon.title;
+      document.body.appendChild(tip);
+      const rect = icon.getBoundingClientRect();
+      tip.style.left = rect.left + 'px';
+      tip.style.top = (rect.bottom + 5) + 'px';
+      icon._tip = tip;
+    });
+    icon.addEventListener('mouseleave', e => {
+      if (icon._tip) document.body.removeChild(icon._tip);
+      icon._tip = null;
+    });
+  });
+});
+
 // ===== INICIALIZAÇÃO =====
 
 // Aguarda carregamento completo do DOM
@@ -690,42 +852,3 @@ if (searchInput) {
   document.body.appendChild(datalist);
   searchInput.setAttribute('list', 'search-suggestions');
 }
-
-// Exemplo de internacionalização (i18n) simples
-const translations = {
-  pt: {
-    dashboard: 'Dashboard',
-    leads: 'Leads',
-    clientes: 'Clientes',
-    imoveis: 'Imóveis',
-    negociacoes: 'Negociações',
-    financeiro: 'Financeiro',
-    relatorios: 'Relatórios',
-    configuracoes: 'Configurações',
-    buscar: 'Buscar...'
-  },
-  en: {
-    dashboard: 'Dashboard',
-    leads: 'Leads',
-    clientes: 'Clients',
-    imoveis: 'Properties',
-    negociacoes: 'Deals',
-    financeiro: 'Finance',
-    relatorios: 'Reports',
-    configuracoes: 'Settings',
-    buscar: 'Search...'
-  }
-};
-// Suporte a tradução dinâmica do placeholder do campo de busca
-function setLanguage(lang) {
-  const t = translations[lang] || translations.pt;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
-  });
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (t[key]) el.placeholder = t[key];
-  });
-}
-window.setLanguage = setLanguage;

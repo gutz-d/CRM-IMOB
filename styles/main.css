@@ -98,6 +98,14 @@
   --container-md: 768px;
   --container-lg: 1024px;
   --container-xl: 1280px;
+
+  /* Dark mode colors */
+  --primary-dark: #0A0A0A;
+  --secondary-dark: #1F1F1F;
+  --accent-blue: #3B82F6;
+  --text-primary: #F8FAFC;
+  --success-green: #10B981;
+  --error-red: #EF4444;
 }
 
 /* Dark mode colors */
@@ -1388,4 +1396,115 @@ button:active, .btn:active, a:active {
     flex-direction: column;
     gap: 0.5rem;
   }
+}
+
+/* Estilos adicionais para dark mode, barra de progresso, tooltips, seções colapsáveis, validações, máscaras e responsividade do formulário de clientes */
+:root {
+  --primary-dark: #0A0A0A;
+  --secondary-dark: #1F1F1F;
+  --accent-blue: #3B82F6;
+  --text-primary: #F8FAFC;
+  --success-green: #10B981;
+  --error-red: #EF4444;
+}
+
+body.theme-dark {
+  background: var(--primary-dark);
+  color: var(--text-primary);
+}
+
+.form-section {
+  background: var(--secondary-dark);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+}
+.form-section.collapsible {
+  border: 1px solid var(--accent-blue);
+  transition: all 0.3s ease;
+}
+.form-section.collapsible:hover {
+  box-shadow: 0 0 15px rgba(59,130,246,0.3);
+}
+.form-section h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #18181b;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--accent-blue);
+  outline: none;
+}
+.field-tip {
+  font-size: 0.85rem;
+  color: var(--accent-blue);
+  margin-top: 0.25rem;
+  display: block;
+}
+.tooltip-icon {
+  margin-left: 0.5rem;
+  color: var(--accent-blue);
+  font-size: 1.1em;
+  transition: transform 0.2s ease;
+  cursor: help;
+}
+.tooltip-icon:hover {
+  transform: scale(1.1);
+}
+.progress-bar-container {
+  width: 100%;
+  background: #222;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  height: 10px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 10px;
+  background: var(--accent-blue);
+  width: 0%;
+  transition: width 0.3s;
+}
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+@media (max-width: 600px) {
+  .form-section {
+    padding: 1rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+input:invalid {
+  border-color: var(--error-red);
+}
+input:valid {
+  border-color: var(--success-green);
 }
